@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "jsx": "preserve",
     "paths": {
       "@/*": ["./src/*"]
     }
