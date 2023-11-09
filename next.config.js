@@ -12,8 +12,22 @@ const nextConfig = {
         hostname: 'styles.redditmedia.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'a.thumbs.redditmedia.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'b.thumbs.redditmedia.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'external-preview.redd.it',
+        port: '',
+      },
     ],
   },
 };
-
 module.exports = nextConfig;

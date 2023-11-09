@@ -1,10 +1,13 @@
 import Image from 'next/image';
 import { SiValorant } from 'react-icons/si';
 import { IoNotifications } from 'react-icons/io5';
+import { SUB_REDDIT } from '@/utils/constant';
+import { useQuery } from '@tanstack/react-query';
+import { fetcher } from '@/api/fetcher';
 
-export const Hero = ({ bgImage = '', textImage = '' }) => {
+export const Hero = () => {
   return (
-    <div className="flex w-full flex-col bg-base-300 p-2">
+    <div className="flex w-full flex-col bg-base-300 p-2 pt-20">
       <div className="flex h-72 w-full items-center rounded-lg bg-[url('https://styles.redditmedia.com/t5_2dkvmc/styles/bannerBackgroundImage_2d0nrelhkkqb1.png')] bg-cover bg-center">
         <div className="ml-0 flex h-full items-center p-1 md:ml-10 md:p-10">
           <Image

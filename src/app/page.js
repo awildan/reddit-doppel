@@ -1,87 +1,87 @@
 'use client';
-import Image from 'next/image';
+
 import { useState } from 'react';
 import Link from 'next/link';
 import { MdOutlineNewReleases } from 'react-icons/md';
 import { BsFire } from 'react-icons/bs';
 import { GiPodium } from 'react-icons/gi';
-import {
-  MdOutlineViewAgenda,
-  MdOutlineViewStream,
-  MdOutlineViewHeadline,
-  MdArrowDropDown,
-} from 'react-icons/md';
 import Hero from '@/components/hero';
-import Thread from '@/components/thread';
+import Thread from '@/components/thread/thread';
 import { Skeleton } from '@/components/skeleton';
+import { checkType } from '@/utils/checkViewtype';
+import { useWindowSize } from '@/utils/hooks/useWindowSize';
+import { useSubredditApi } from '@/api/hooks/useSubredditApi';
+import { DropdownView } from '@/components/dropdownView';
 
 export default function Home() {
-  const [threadType, setThreadType] = useState('card');
+  const [threadType, setThreadType] = useState('card'); // 'card' | 'classic' | 'compact'
+  const [filter, setFilter] = useState('hot'); // 'hot' | 'top' | 'new'
+  const { isCard } = checkType(threadType);
+  const size = useWindowSize();
+  const isMobile = size.width < 768;
 
-  const handleChangeThreadType = (type) => {
-    console.log('type', type);
-    setThreadType(type);
+  const { isFetching, threads } = useSubredditApi(filter);
+
+  const handleChangeThreadType = (viewType) => {
+    setThreadType(viewType);
   };
+
+  const handleFilterThread = (filterType) => {
+    console.log('filter', filterType);
+    setFilter(filterType);
+  };
+
+  const cardWidth = isCard ? 'w-3/4' : 'w-full';
+  const mobileWidth = isMobile ? 'w-full' : cardWidth;
+
   return (
     <main className="flex flex-col">
       <Hero />
       <div className="m-5 flex items-center justify-center">
         <div className="container flex max-w-screen-xl flex-col  items-center justify-center">
-          <div className="card h-20 w-3/4 flex-row items-center justify-between bg-base-300 p-4 shadow-xl">
-            {/* Sorting Part */}
+          {/* Part Control Thread */}
+          <div
+            className={`${mobileWidth} card h-20  flex-row items-center justify-between bg-base-300 p-4 shadow-xl`}
+          >
+            {/* Part Sorting */}
             <div className="flex gap-4">
-              <button className="btn btn-outline btn-active rounded-full">
+              <button
+                onClick={() => handleFilterThread('hot')}
+                className={`btn-filter ${filter === 'hot' && 'btn-active'}`}
+              >
                 <BsFire size={22} /> hot
               </button>
-              <button className="btn btn-outline rounded-full">
+              <button
+                onClick={() => handleFilterThread('new')}
+                className={`btn-filter ${filter === 'new' && 'btn-active'}`}
+              >
                 <MdOutlineNewReleases size={22} />
                 new
               </button>
-              <button className="btn btn-outline rounded-full">
+              <button
+                onClick={() => handleFilterThread('top')}
+                className={`btn-filter ${filter === 'top' && 'btn-active'}`}
+              >
                 <GiPodium size={22} /> top
               </button>
             </div>
 
-            {/* Change View Part */}
-            <div className="flex">
-              <div className="dropdo dropdown dropdown-end dropdown-bottom">
-                <label tabIndex={0} className="btn m-1">
-                  <MdOutlineViewAgenda /> <MdArrowDropDown />
-                </label>
-                <ul
-                  tabIndex={0}
-                  className="menu dropdown-content rounded-box z-[1] w-max bg-base-100 p-2 shadow"
-                >
-                  <li onClick={() => handleChangeThreadType('card')}>
-                    <a>
-                      <MdOutlineViewAgenda />
-                      Card
-                    </a>
-                  </li>
-                  <li onClick={() => handleChangeThreadType('classic')}>
-                    <a>
-                      <MdOutlineViewStream /> Classic
-                    </a>
-                  </li>
-                  <li>
-                    <a>
-                      <MdOutlineViewHeadline /> Compact
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            {/* Part Change View */}
+            <DropdownView handleChangeType={handleChangeThreadType} currentType={threadType} />
           </div>
           <div className="divider"></div>
 
           {/* List Thread Part */}
-          <div className={`${threadType === 'card' && 'gap-4'} flex flex-col items-center`}>
-            <Thread type={threadType} />
-            <Thread type={threadType} />
-            <Thread type={threadType} />
+          <div
+            className={`${mobileWidth} ${isCard ? 'gap-4' : 'w-full'} flex flex-col items-center`}
+          >
+            {isFetching
+              ? [...Array(3)].map((_, i) => <Skeleton key={i} />)
+              : threads.map((thread, index) => (
+                  <Thread type={threadType} data={thread.data} key={index} />
+                ))}
 
             {/* Loading Part */}
-            <Skeleton />
           </div>
         </div>
       </div>

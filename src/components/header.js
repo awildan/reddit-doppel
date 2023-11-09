@@ -3,11 +3,11 @@ import Link from 'next/link';
 
 export const Header = () => {
   return (
-    <nav className="navbar bg-base-300">
+    <nav className="navbar fixed z-10 bg-base-300">
       <div className="flex-1">
         <Link className="btn btn-ghost text-xl normal-case hover:bg-transparent" href="/">
           <Image src="/reddit.svg" alt="reddit logo" width={32} height={32} />
-          Reddit
+          D-Reddit
         </Link>
         <input
           type="text"
