@@ -1,8 +1,6 @@
 import { checkType } from '@/utils/checkViewtype';
-import dayjs from 'dayjs';
 import React from 'react';
-import relativeTime from 'dayjs/plugin/relativeTime';
-dayjs.extend(relativeTime);
+import { timeFromNow } from '@/utils/time';
 
 const Summary = ({ data, type }) => {
   const { isCard, isCompact } = checkType(type);
@@ -10,24 +8,24 @@ const Summary = ({ data, type }) => {
   return (
     <>
       {isCard && (
-        <p className="text-xs font-light">
-          Posted by u/{data.author} {dayjs.unix(data.created).fromNow()} hour ago
+        <p className="p-2 pl-0 pt-0 text-xs font-light">
+          Posted by u/{data.author} {timeFromNow(data.created)} hour ago
         </p>
       )}
-      <h2 className={`${isCompact && 'w-4/5'} text-lg font-semibold`}>
+      <h2 className={`${isCompact && 'w-4/5'} p-2 pl-0 pt-0 text-lg font-semibold`}>
         {data.title}
         <span className="badge badge-warning ml-2 font-normal capitalize">
           {data.link_flair_text}
         </span>
         {!isCard && (
           <p className="text-xs font-light">
-            Posted by u/{data.author} {dayjs.unix(data.created).fromNow()} hour ago
+            Posted by u/{data.author} {timeFromNow(data.created)} hour ago
           </p>
         )}
       </h2>
       {isCard && (
         <>
-          <p className="max-h-16 overflow-hidden text-ellipsis break-all text-justify">
+          <p className="max-h-16 overflow-hidden text-ellipsis break-all text-justify text-sm font-normal">
             {data.selftext}
           </p>
           <p>...</p>

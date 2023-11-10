@@ -13,6 +13,6 @@ export const useSubredditApi = (filter = 'hot') => {
 
   return {
     isFetching,
-    threads: data?.data?.children,
+    threads: data?.data?.children || {},
   };
 };

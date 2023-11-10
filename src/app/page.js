@@ -27,7 +27,6 @@ export default function Home() {
   };
 
   const handleFilterThread = (filterType) => {
-    console.log('filter', filterType);
     setFilter(filterType);
   };
 
@@ -75,13 +74,13 @@ export default function Home() {
           <div
             className={`${mobileWidth} ${isCard ? 'gap-4' : 'w-full'} flex flex-col items-center`}
           >
-            {isFetching
-              ? [...Array(3)].map((_, i) => <Skeleton key={i} />)
-              : threads.map((thread, index) => (
-                  <Thread type={threadType} data={thread.data} key={index} />
-                ))}
-
-            {/* Loading Part */}
+            {isFetching ? (
+              <Skeleton paragraph={3} />
+            ) : (
+              threads?.map((thread, index) => (
+                <Thread type={threadType} data={thread.data} key={index} />
+              ))
+            )}
           </div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/header';
-import { BiShare } from 'react-icons/bi';
 import { ScrollToTop } from '@/components/scrollToTop';
 import Providers from './provider';
 import { fetcher } from '@/api/fetcher';
@@ -13,8 +12,10 @@ export const generateMetadata = async () => {
   const { data } = await fetcher(`/r/${SUB_REDDIT}/about.json`);
 
   return {
-    title: data.title,
-    description: data.public_description,
+    title: data?.title || 'VALORANT',
+    description:
+      data?.public_description ||
+      'VALORANT™ is a free to play 5v5, character-based tactical shooter by Riot Games.',
   };
 };
 
