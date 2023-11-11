@@ -1,7 +1,7 @@
 'use client';
 import ThreadDeTail from '@/components/thread/partial/modalBody';
 import { useRouter, useParams } from 'next/navigation';
-import { IoNotifications } from 'react-icons/io5';
+import { IoNotifications, IoHome } from 'react-icons/io5';
 
 export default function Page() {
   const router = useRouter();
@@ -15,10 +15,15 @@ export default function Page() {
           <div className="card sticky top-16 z-20 h-20 w-full flex-row items-center justify-between bg-base-300 p-4">
             <div className="breadcrumbs text-sm">
               <ul>
-                <li onClick={() => router.replace('/', { scroll: false })}>
-                  <a>Home</a>
+                <li onClick={() => router.push('/')}>
+                  <a>
+                    <IoHome size={18} className="mr-2 capitalize" /> Home
+                  </a>
                 </li>
-                <li>Valorant</li>
+                <li onClick={() => router.push('/')} className="capitalize">
+                  <a>{params?.subreddit}</a>
+                </li>
+                <li className="capitalize">Comments</li>
               </ul>
             </div>
             <div className="flex gap-4">
