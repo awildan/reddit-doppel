@@ -2,7 +2,7 @@
 
 This is a clone of Reddit website especially subthread page.
 
-> _***Make sure your ISP is not blocking reddit when [run](#getting-started) this project or check [preview](#preview) !!!***_
+> _***Make sure your ISP is not blocking reddit when [run](#getting-started) this project or checking [preview](#preview) !!!***_
 
 ## Tech Stack
 
