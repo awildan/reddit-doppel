@@ -20,7 +20,14 @@ export const Header = () => {
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className="avatar btn btn-ghost">
             <div className="w-10 rounded">
-              <Image src={AVATAR_IMAGE} alt="user logo" width={32} height={32} quality={100} />
+              <Image
+                src={AVATAR_IMAGE}
+                alt="user logo"
+                width={32}
+                height={32}
+                quality={100}
+                priority
+              />
             </div>
           </label>
           <ul

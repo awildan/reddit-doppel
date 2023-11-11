@@ -12,7 +12,7 @@ export const Comment = ({ data, isPage = false }) => {
     <div className={`flex flex-row gap-2 rounded-none ${bgBase} p-3`}>
       <div className="avatar flex flex-col">
         <div className="w-8 rounded">
-          <Image src={AVATAR_IMAGE} width={40} height={40} alt="Tailwind-CSS-Avatar-component" />
+          <Image src={AVATAR_IMAGE} width={40} height={40} alt="avatar" />
         </div>
       </div>
       <div className="comment flex flex-col gap-1">

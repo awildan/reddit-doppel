@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { ThreadAction } from '@/components/thread/partial/action';
 import Summary from './partial/summary';
 import { checkType } from '@/utils/checkViewtype';
-import { EMPTY_IMAGE_DARK } from '@/utils/constant';
+import { THUMBNAIL } from '@/utils/constant';
 import ModalThread from './partial/modal';
 import { useVote } from '@/utils/hooks/useVote';
 
@@ -23,8 +23,7 @@ export const Thread = ({ type, data }) => {
   };
 
   const classClassic = isCard ? 'card' : 'flex border-b-[1px] dark:border-b-gray-800';
-  const thumbnail =
-    data.thumbnail !== 'self' ? data.thumbnail.replaceAll('&amp;', '&') : EMPTY_IMAGE_DARK;
+
   return (
     <div
       className={`${classClassic} w-full cursor-pointer flex-row  bg-base-300 shadow-xl hover:bg-base-200`}
@@ -49,10 +48,11 @@ export const Thread = ({ type, data }) => {
             {isClassic && (
               <Image
                 className="h-auto w-auto object-cover"
-                src={thumbnail}
+                src={THUMBNAIL(data.thumbnail)}
                 alt="picture thread"
                 width={100}
                 height={100}
+                priority
               />
             )}
             <div className={`flex ${isCompact ? 'w-full flex-row justify-between' : 'flex-col'}`}>

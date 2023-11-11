@@ -1,10 +1,12 @@
 import { checkType } from '@/utils/checkViewtype';
 import React from 'react';
 import { timeFromNow } from '@/utils/time';
+import { checkBadge } from '@/utils/badge';
 
 const Summary = ({ data, type }) => {
   const { isCard, isCompact } = checkType(type);
 
+  const badgeType = checkBadge(data?.link_flair_text?.toLowerCase());
   return (
     <>
       {isCard && (
@@ -14,7 +16,7 @@ const Summary = ({ data, type }) => {
       )}
       <h2 className={`${isCompact && 'w-4/5'} p-2 pl-0 pt-0 text-lg font-semibold`}>
         {data.title}
-        <span className="badge badge-warning ml-2 font-normal capitalize">
+        <span className={`badge ${badgeType} ml-2 font-normal capitalize`}>
           {data.link_flair_text}
         </span>
         {!isCard && (

@@ -15,7 +15,7 @@ export default function Page() {
           <div className="card sticky top-16 z-20 h-20 w-full flex-row items-center justify-between bg-base-300 p-4">
             <div className="breadcrumbs text-sm">
               <ul>
-                <li onClick={() => router.push('/')}>
+                <li onClick={() => router.replace('/', { scroll: false })}>
                   <a>Home</a>
                 </li>
                 <li>Valorant</li>

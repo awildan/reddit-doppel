@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
 import { MdOutlineNewReleases } from 'react-icons/md';
 import { BsFire } from 'react-icons/bs';
 import { GiPodium } from 'react-icons/gi';
@@ -12,15 +11,19 @@ import { checkType } from '@/utils/checkViewtype';
 import { useWindowSize } from '@/utils/hooks/useWindowSize';
 import { useSubredditApi } from '@/api/hooks/useSubredditApi';
 import { DropdownView } from '@/components/dropdownView';
+import debounce from 'lodash/debounce';
 
 export default function Home() {
   const [threadType, setThreadType] = useState('card'); // 'card' | 'classic' | 'compact'
   const [filter, setFilter] = useState('hot'); // 'hot' | 'top' | 'new'
+  const [isViewed, setIsViewed] = useState(false);
+
+  const { isLoading, threads, setParams, after } = useSubredditApi(filter);
+
   const { isCard } = checkType(threadType);
   const size = useWindowSize();
   const isMobile = size.width < 768;
-
-  const { isFetching, threads } = useSubredditApi(filter);
+  const mainRef = useRef(null);
 
   const handleChangeThreadType = (viewType) => {
     setThreadType(viewType);
@@ -30,11 +33,39 @@ export default function Home() {
     setFilter(filterType);
   };
 
+  const handleScroll = () => {
+    if (mainRef.current && typeof window !== 'undefined') {
+      const container = mainRef.current;
+      const { bottom } = container.getBoundingClientRect();
+      const { innerHeight } = window;
+
+      setIsViewed(Math.floor(bottom - 1) <= innerHeight);
+    }
+  };
+
+  useEffect(() => {
+    const handleDebouncedScroll = debounce(() => handleScroll(), 400);
+    window.addEventListener('scroll', handleDebouncedScroll);
+    return () => {
+      window.removeEventListener('scroll', handleDebouncedScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isViewed && !isLoading) {
+      setParams((prev) => ({
+        ...prev,
+        after,
+      }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isViewed]);
+
   const cardWidth = isCard ? 'w-3/4' : 'w-full';
   const mobileWidth = isMobile ? 'w-full' : cardWidth;
 
   return (
-    <main className="flex flex-col">
+    <main className="flex flex-col" ref={mainRef}>
       <Hero />
       <div className="m-5 flex items-center justify-center">
         <div className="container flex max-w-screen-xl flex-col  items-center justify-center">
@@ -74,13 +105,11 @@ export default function Home() {
           <div
             className={`${mobileWidth} ${isCard ? 'gap-4' : 'w-full'} flex flex-col items-center`}
           >
-            {isFetching ? (
-              <Skeleton paragraph={3} />
-            ) : (
-              threads?.map((thread, index) => (
-                <Thread type={threadType} data={thread.data} key={index} />
-              ))
-            )}
+            {threads?.map((thread, index) => (
+              <Thread type={threadType} data={thread.data} key={index} />
+            ))}
+
+            {isLoading && <Skeleton paragraph={threads?.length > 0 ? 1 : 3} />}
           </div>
         </div>
       </div>

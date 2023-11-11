@@ -1,4 +1,4 @@
-## Description
+## Reddit Doppel
 
 This is a clone of Reddit website especially subthread page.
 
@@ -44,6 +44,10 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## API
+
+`https://www.reddit.com/dev/api`
 
 ## Deploy on Vercel
 

@@ -1,9 +1,6 @@
 import Image from 'next/image';
 import { SiValorant } from 'react-icons/si';
 import { IoNotifications } from 'react-icons/io5';
-import { SUB_REDDIT } from '@/utils/constant';
-import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '@/api/fetcher';
 
 export const Hero = () => {
   return (
@@ -13,9 +10,10 @@ export const Hero = () => {
           <Image
             src="https://styles.redditmedia.com/t5_2dkvmc/styles/bannerPositionedImage_jcmkrvypkkqb1.png"
             className="m-"
-            alt="reddit logo"
+            alt="subreddit text"
             width={381}
             height={60}
+            priority
           />
         </div>
       </div>

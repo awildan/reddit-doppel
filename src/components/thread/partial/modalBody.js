@@ -1,5 +1,5 @@
 'use client';
-import { SUB_REDDIT } from '@/utils/constant';
+import { SUB_REDDIT, THUMBNAIL } from '@/utils/constant';
 import Image from 'next/image';
 import React from 'react';
 import { BiCommentDetail, BiDownvote, BiShare, BiUpvote } from 'react-icons/bi';
@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/skeleton';
 import { timeFromNow } from '@/utils/time';
 import { useVote } from '@/utils/hooks/useVote';
 import { useRouter } from 'next/navigation';
+import { checkBadge } from '@/utils/badge';
 
 const Editor = dynamic(() => import('../../editor'), {
   ssr: false,
@@ -25,6 +26,10 @@ export const ThreadDeTail = ({ threadId, isOpen, isPage = false }) => {
     router.replace(`/r/${SUB_REDDIT}/comments/${threadId}`);
   };
 
+  const badgeType = checkBadge(thread.detail?.link_flair_text?.toLowerCase());
+
+  console.log('ini', badgeType);
+
   return isFetching && thread?.detail === null ? (
     <Skeleton withImg paragraph={3} />
   ) : (
@@ -36,7 +41,11 @@ export const ThreadDeTail = ({ threadId, isOpen, isPage = false }) => {
             Posted by u/{thread.detail?.author} {timeFromNow(thread.detail?.created)} hours ago
           </p>
           <h2 className="card-title">{thread.detail?.title}</h2>
-          <label className="badge badge-accent font-normal capitalize">
+          <label
+            className={`badge ${checkBadge(
+              thread.detail?.link_flair_text?.toLowerCase(),
+            )}  font-normal capitalize`}
+          >
             {thread.detail?.link_flair_text}
           </label>
         </div>
@@ -52,10 +61,11 @@ export const ThreadDeTail = ({ threadId, isOpen, isPage = false }) => {
           <figure>
             <Image
               className="h-[480px] w-full"
-              src={thread.detail?.thumbnail?.replaceAll('&amp;', '&')}
+              src={THUMBNAIL(thread.detail?.thumbnail)}
               width={720}
               height={480}
-              alt="Shoes"
+              alt="thumbnail"
+              priority
             />
           </figure>
         )}
